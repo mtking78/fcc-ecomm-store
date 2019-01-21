@@ -1,11 +1,114 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { ProductConsumer } from '../context';
 
 export default class Product extends Component {
   render() {
+
+    const { id, title, img, price, inCart } = this.props.product;
+
     return (
-      <div>
-        <h3>hello from Product</h3>
-      </div>
+      <ProductWrapper className="col-9 mx-auto col-md-6 col-lg-3 my-3">
+        <div className="card">
+          <div
+            className="img-container p-5"
+            onClick={console.log("You clicked me")}
+          >
+            <Link to="/details">
+              {/* img src comes from folder named 'img' in public folder */}
+              <img
+                src={ img }
+                alt="product"
+                className="card-img-top"
+              />
+            </Link>
+
+            {/* Cart Button */}
+            <button
+              className="cart-btn"
+              // Ternary operator for conditional clicking
+              disabled={ inCart? true : false }
+              onClick={() => {console.log("added to cart")}}
+            >
+            {/* Check the inCart value */}
+            {inCart ? (
+              // if true, show inCart text, disable the button
+              <p className="text-capitalize mb-0" disabled>
+                {" "}
+                In Cart
+              </p>
+            ) : (
+              // if false, show addToCard icon
+              <i className="fas fa-cart-plus" />
+            )}
+            </button>
+
+          </div>
+
+          {/* Card Footer */}
+          <div className="card-footer d-flex justify-content-between">
+              <p className="align-self-center mb-0">
+                { title }
+              </p>
+              <h5 className="text-blue font-italic mb-0">
+                <span className="mr-1">$ { price }</span>
+              </h5>
+          </div>
+
+        </div>
+      </ProductWrapper>
     )
   }
 }
+
+const ProductWrapper = styled.div`
+.card {
+  border-color: transparent;
+  transition: all 1s linear;
+}
+.card-footer {
+  background: transparent;
+  border-top: transparent;
+  transition: all 1s linear;
+}
+&:hover {
+  .card {
+    border: 0.04rem solid rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.2);
+  }
+  .card-footer {
+    background: rgba(247,247,247);
+  }
+}
+.img-container {
+  overflow: hidden;
+  position: relative;
+}
+.card-img-top {
+  transition: all 1s linear;
+}
+.img-container:hover .card-img-top {
+  transform: scale(1.2);
+}
+.cart-btn {
+  background: var(--lightBlue);
+  border: none;
+  border-radius: 0.5rem 0 0 0;
+  bottom: 0;
+  color: var(--mainWhite);
+  font-size: 1.4rem;
+  padding: 0.2rem 0.4rem;
+  position: absolute;
+  right: 0;
+  transform: translate(100%, 100%);
+}
+.img-container:hover .cart-btn {
+  transform: translate(0, 0);
+  transition: all 1s linear;
+}
+.cart-btn: hover {
+  color: var(--mainBlue);
+  cursor: pointer;
+}
+`;
