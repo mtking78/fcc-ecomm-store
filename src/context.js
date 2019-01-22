@@ -11,7 +11,8 @@ class ProductProvider extends Component {
     // Line below will not work, because it is a reference to the data
     // products: storeProducts,
     products: [],
-    detailProduct: detailProduct
+    detailProduct: detailProduct,
+    cart: []
   }
 
   componentDidMount() {
@@ -50,8 +51,29 @@ class ProductProvider extends Component {
   };
 
   addToCart = (id) => {
-    console.log(`Hello from addToCart.id is ${ id }`);
-  }
+    // Create a temporary products array
+    let tempProducts = [...this.state.products];
+    // Find the index of the product from all products in state
+    const index = tempProducts.indexOf(this.getItem(id));
+    // new variable is specific item from the temporary array
+    const product = tempProducts[index];
+
+    // change the values to reflect 1 product added to cart
+    product.inCart = true;
+    product.count = 1;
+    const price = product.price;
+    product.total = price;
+
+    this.setState(
+      () => {
+        // Change the products to tempProducts array, add the specific product to the cart
+        return { products: tempProducts, cart: [...this.state.cart, product] };
+      },
+      () => {
+      console.log(this.state)
+      }
+    );
+  };
 
   render() {
     return (
