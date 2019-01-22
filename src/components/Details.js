@@ -47,6 +47,8 @@ export default class Details extends Component {
                   </Link>
                   {/* Show, disable button based on inCart state. */}
                   <ButtonContainer
+                    // next property, 'cart' is used to style with props in Button.js
+                    cart
                     disabled={ inCart ? true : false }
                     onClick={() => {
                       value.addToCart(id);
