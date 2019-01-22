@@ -12,40 +12,48 @@ export default class Product extends Component {
     return (
       <ProductWrapper className="col-9 mx-auto col-md-6 col-lg-3 my-3">
         <div className="card">
-          <div
-            className="img-container p-5"
-            onClick={console.log("You clicked me")}
-          >
-            <Link to="/details">
-              {/* img src comes from folder named 'img' in public folder */}
-              <img
-                src={ img }
-                alt="product"
-                className="card-img-top"
-              />
-            </Link>
+          <ProductConsumer>
+            {(value) => (
+              <div
+                className="img-container p-5"
+                onClick={() => {
+                  value.handleDetail(id);
+                }}
+              >
+                <Link to="/details">
+                  {/* img src comes from folder named 'img' in public folder */}
+                  <img
+                    src={ img }
+                    alt="product"
+                    className="card-img-top"
+                  />
+                </Link>
 
-            {/* Cart Button */}
-            <button
-              className="cart-btn"
-              // Ternary operator for conditional clicking
-              disabled={ inCart? true : false }
-              onClick={() => {console.log("added to cart")}}
-            >
-            {/* Check the inCart value */}
-            {inCart ? (
-              // if true, show inCart text, disable the button
-              <p className="text-capitalize mb-0" disabled>
-                {" "}
-                In Cart
-              </p>
-            ) : (
-              // if false, show addToCard icon
-              <i className="fas fa-cart-plus" />
+                {/* Cart Button */}
+                <button
+                  className="cart-btn"
+                  // Ternary operator for conditional clicking
+                  disabled={ inCart? true : false }
+                  onClick={() => {
+                    value.addToCart(id);
+                  }}
+                >
+                {/* Check the inCart value */}
+                {inCart ? (
+                  // if true, show inCart text, disable the button
+                  <p className="text-capitalize mb-0" disabled>
+                    {" "}
+                    In Cart
+                  </p>
+                ) : (
+                  // if false, show addToCard icon
+                  <i className="fas fa-cart-plus" />
+                )}
+                </button>
+
+              </div>
             )}
-            </button>
-
-          </div>
+          </ProductConsumer>
 
           {/* Card Footer */}
           <div className="card-footer d-flex justify-content-between">
