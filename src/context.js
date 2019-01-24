@@ -96,11 +96,56 @@ class ProductProvider extends Component {
   };
 
   increment = (id) => {
-    console.log("increment method");
+    let tempCart = [...this.state.cart];
+    const selectedProduct = tempCart.find(item => item.id === id);
+
+    const index = tempCart.indexOf(selectedProduct);
+    const product = tempCart[index];
+
+    product.count += 1;
+    product.total = product.count * product.price;
+
+    this.setState(
+      () => {
+        return {
+          cart: [...tempCart]
+        }
+      },
+      () => {
+        // Count the totals when they are changed.
+        this.addTotals();
+      }
+    );
   }
 
   decrement = (id) => {
-    console.log("decrement method");
+    let tempCart = [...this.state.cart];
+    const selectedProduct = tempCart.find(item => item.id === id);
+
+    const index = tempCart.indexOf(selectedProduct);
+    const product = tempCart[index];
+
+    product.count = product.count - 1;
+
+    // Once item count reaches 0, automatically remove the item from the cart.
+    if (product.count === 0) {
+      this.removeItem(id);
+    } else {
+      product.total = product.count * product.price;
+
+      this.setState(
+        () => {
+          return {
+            cart: [...tempCart]
+          }
+        },
+        () => {
+          // Count the totals when they are changed.
+          this.addTotals();
+        }
+      );
+
+    }
   }
 
   removeItem = (id) => {
@@ -118,25 +163,31 @@ class ProductProvider extends Component {
     removedProduct.count = 0;
     removedProduct.total = 0;
 
-    this.setState(() => {
-      return {
-        cart: [...tempCart],
-        products: [...tempProducts]
-      };
-    }, () => {
-      this.addTotals();
-    });
+    this.setState(
+      () => {
+        return {
+          cart: [...tempCart],
+          products: [...tempProducts]
+        };
+      },
+      () => {
+        this.addTotals();
+      }
+    );
   }
 
   clearCart = () => {
-    this.setState(() => {
-      return { cart: [] };
-    }, () => {
-      // Will reset the array of products and their values.
-      this.setProducts();
-      // Will rest the totals back to the initial zeroes.
-      this.addTotals();
-    });
+    this.setState(
+      () => {
+        return { cart: [] };
+      },
+      () => {
+        // Will reset the array of products and their values.
+        this.setProducts();
+        // Will rest the totals back to the initial zeroes.
+        this.addTotals();
+      }
+    );
   }
 
   addTotals = () => {
