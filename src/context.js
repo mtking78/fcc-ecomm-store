@@ -108,7 +108,14 @@ class ProductProvider extends Component {
   }
 
   clearCart = () => {
-    console.log("cart emptied");
+    this.setState(() => {
+      return { cart: [] };
+    }, () => {
+      // Will reset the array of products and their values.
+      this.setProducts();
+      // Will rest the totals back to the initial zeroes.
+      this.addTotals();
+    })
   }
 
   addTotals = () => {
