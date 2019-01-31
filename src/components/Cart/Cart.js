@@ -20,7 +20,10 @@ export default class Cart extends Component {
                   <CartColumns />
                   {/* Pass down values as props */}
                   <CartList value={ value}/>
-                  <CartTotals value={ value}/>
+                  <CartTotals
+                    value={ value}
+                    history={this.props.history}
+                  />
                 </React.Fragment>
               );
             } else {
